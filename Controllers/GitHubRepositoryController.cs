@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GitHubCommunicationService.Controllers
@@ -11,6 +12,11 @@ namespace GitHubCommunicationService.Controllers
             
         }
 
-        
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            await Task.Delay(5000);
+            return Ok();
+        }
     }
 }
