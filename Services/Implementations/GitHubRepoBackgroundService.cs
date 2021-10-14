@@ -29,7 +29,7 @@ namespace GitHubCommunicationService.Services.Implementations
                 {
                     using var scope = _services.CreateScope();
 
-                    var _gitHubHttpClient = scope.ServiceProvider
+                    var _gitHubService = scope.ServiceProvider
                         .GetRequiredService<IGitHubService>();
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
