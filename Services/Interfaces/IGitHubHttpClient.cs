@@ -1,6 +1,6 @@
 namespace GitHubCommunicationService.Services.Interfaces
 {
-    internal interface IGitHubHttpClient
+    public interface IGitHubHttpClient
     {
     }
 }

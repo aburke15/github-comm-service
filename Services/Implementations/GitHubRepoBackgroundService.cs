@@ -14,7 +14,9 @@ namespace GitHubCommunicationService.Services.Implementations
         private readonly IServiceProvider _services;
         private readonly ILogger<GitHubRepoBackgroundService> _logger;
 
-        public GitHubRepoBackgroundService(IServiceProvider services, ILogger<GitHubRepoBackgroundService> logger)
+        public GitHubRepoBackgroundService(
+            IServiceProvider services, 
+            ILogger<GitHubRepoBackgroundService> logger)
         {
             _services = services;
             _logger = logger;
@@ -29,7 +31,7 @@ namespace GitHubCommunicationService.Services.Implementations
                 {
                     using var scope = _services.CreateScope();
 
-                    var _gitHubHttpClient = scope.ServiceProvider
+                    var _gitHubService = scope.ServiceProvider
                         .GetRequiredService<IGitHubService>();
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
