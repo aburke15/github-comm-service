@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GitHubCommunicationService.Services;
+using GitHubCommunicationService.Services.Implementations;
+using GitHubCommunicationService.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,7 +36,7 @@ namespace GitHubCommunicationService
             });
 
             services.AddLogging();
-
+            services.AddTransient<IGitHubService, GitHubService>();
             services.AddHostedService<GitHubRepoBackgroundService>();
         }
 

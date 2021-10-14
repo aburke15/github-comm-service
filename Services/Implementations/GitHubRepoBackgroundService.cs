@@ -2,17 +2,21 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using GitHubCommunicationService.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GitHubCommunicationService.Services
+namespace GitHubCommunicationService.Services.Implementations
 {
     public class GitHubRepoBackgroundService : BackgroundService
     {
+        private readonly IServiceProvider _services;
         private readonly ILogger<GitHubRepoBackgroundService> _logger;
 
-        public GitHubRepoBackgroundService(ILogger<GitHubRepoBackgroundService> logger)
+        public GitHubRepoBackgroundService(IServiceProvider services, ILogger<GitHubRepoBackgroundService> logger)
         {
+            _services = services;
             _logger = logger;
         }
 
@@ -23,6 +27,11 @@ namespace GitHubCommunicationService.Services
             {
                 try
                 {
+                    using var scope = _services.CreateScope();
+
+                    var _gitHubHttpClient = scope.ServiceProvider
+                        .GetRequiredService<IGitHubService>();
+
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;
                 }
