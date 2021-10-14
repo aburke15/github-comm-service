@@ -14,7 +14,9 @@ namespace GitHubCommunicationService.Services.Implementations
         private readonly IServiceProvider _services;
         private readonly ILogger<GitHubRepoBackgroundService> _logger;
 
-        public GitHubRepoBackgroundService(IServiceProvider services, ILogger<GitHubRepoBackgroundService> logger)
+        public GitHubRepoBackgroundService(
+            IServiceProvider services, 
+            ILogger<GitHubRepoBackgroundService> logger)
         {
             _services = services;
             _logger = logger;
