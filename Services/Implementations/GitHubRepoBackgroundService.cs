@@ -40,7 +40,7 @@ namespace GitHubCommunicationService.Services.Implementations
                 catch (Exception ex)
                 {
                     _logger.LogError(
-                        $"Error encountered on server. Background Service {nameof(GitHubRepoBackgroundService)} : {0}", ex.Message
+                        $"Error encountered on server. Background Service {nameof(GitHubRepoBackgroundService)} - {ex.Message}"
                     );
                 }
 
