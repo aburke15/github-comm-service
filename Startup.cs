@@ -36,8 +36,6 @@ namespace GitHubCommunicationService
             });
 
             services.AddLogging();
-            services.AddHttpClient<IGitHubHttpClient, GitHubHttpClient>();
-
             services.AddTransient<IGitHubService, GitHubService>();
             services.AddHostedService<GitHubRepoBackgroundService>();
         }
