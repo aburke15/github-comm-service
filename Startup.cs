@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Services.Implementations;
 using GitHubCommunicationService.Services.Interfaces;
@@ -36,6 +37,7 @@ namespace GitHubCommunicationService
             });
 
             services.AddLogging();
+            services.Configure<GitHubOptions>(Configuration.GetSection(nameof(GitHubOptions)));
             services.AddTransient<IGitHubService, GitHubService>();
             services.AddHostedService<GitHubRepoBackgroundService>();
         }
