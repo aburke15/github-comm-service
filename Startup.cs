@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GitHubCommunicationService.Config;
-using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Services.Implementations;
 using GitHubCommunicationService.Services.Interfaces;
+using GitHubCommunicationService.Workers;
+using RestSharp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,8 +39,9 @@ namespace GitHubCommunicationService
 
             services.AddLogging();
             services.Configure<GitHubOptions>(Configuration.GetSection(nameof(GitHubOptions)));
+            services.AddTransient<IRestClient, RestClient>();
             services.AddTransient<IGitHubService, GitHubService>();
-            services.AddHostedService<GitHubRepoBackgroundService>();
+            services.AddHostedService<GitHubRepositoryBackgroundService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
