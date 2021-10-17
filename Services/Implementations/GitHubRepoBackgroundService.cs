@@ -40,10 +40,12 @@ namespace GitHubCommunicationService.Services.Implementations
                     var _gitHubService = scope.ServiceProvider
                         .GetRequiredService<IGitHubService>();
 
-                    await _gitHubService.GetUserRepositoriesAsync(
+                    var resutls = await _gitHubService.GetUserRepositoriesAsync(
                         token: _gitHubOptions.AuthToken, 
                         username: _gitHubOptions.Username, 
                         ct: stoppingToken);
+
+                    Console.WriteLine(resutls);
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;

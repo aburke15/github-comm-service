@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using GitHubCommunicationService.Config;
+using GitHubCommunicationService.Responses;
 using GitHubCommunicationService.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -15,12 +18,10 @@ namespace GitHubCommunicationService.Services.Implementations
     {
         private readonly GitHubOptions _gitHubOptions;
 
-        public GitHubService(IOptions<GitHubOptions> gitHubOptions)
-        {
-            _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
-        }
+        public GitHubService(IOptions<GitHubOptions> gitHubOptions) 
+            => _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
 
-        public async Task<IEnumerable<object>> GetUserRepositoriesAsync(
+        public async Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(
             string token, string username, CancellationToken ct = default)
         {
             var client = new RestClient(_gitHubOptions.BaseUri) as IRestClient;
@@ -33,11 +34,9 @@ namespace GitHubCommunicationService.Services.Implementations
             var response = await client.ExecuteGetAsync(request, ct);
 
             if (!response.IsSuccessful)
-                Console.WriteLine("Failed request ", response.ErrorMessage);
+                return Enumerable.Empty<GitHubUserRepositoryResponse>();
 
-            Console.WriteLine(response?.Content);
-
-            return new List<object>();
+            return JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content);
         }
     }
 }
