@@ -5,9 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using GitHubCommunicationService.Config;
+using GitHubCommunicationService.Data.Models;
 using GitHubCommunicationService.Responses;
 using GitHubCommunicationService.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using MongoDatabaseAdapter.Abstractions;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -18,13 +20,16 @@ namespace GitHubCommunicationService.Services.Implementations
     {
         private readonly GitHubOptions _gitHubOptions;
         private readonly IRestClient _client;
+        private readonly IMongoDbRepository _dbRepository;
 
         public GitHubService(
             IOptions<GitHubOptions> gitHubOptions,
-            IRestClient client)
+            IRestClient client,
+            IMongoDbRepository dbRepository)
         {
             _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
             _client = Guard.Against.Null(client, nameof(client));
+            _dbRepository = Guard.Against.Null(dbRepository, nameof(dbRepository));
         }
 
         public async Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(
@@ -46,6 +51,11 @@ namespace GitHubCommunicationService.Services.Implementations
                 return Enumerable.Empty<GitHubUserRepositoryResponse>();
 
             return JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content);
+        }
+
+        public Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string dbName, string collectionName)
+        {
+            return _dbRepository.GetAllAsync<Reservation>(dbName, collectionName);
         }
     }
 }

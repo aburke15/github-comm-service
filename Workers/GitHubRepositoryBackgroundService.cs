@@ -37,15 +37,21 @@ namespace GitHubCommunicationService.Workers
                 {
                     using var scope = _services.CreateScope();
 
-                    var _gitHubService = scope.ServiceProvider
+                    var gitHubService = scope.ServiceProvider
                         .GetRequiredService<IGitHubService>();
 
-                    var results = await _gitHubService.GetUserRepositoriesAsync(
-                        token: _gitHubOptions.AuthToken, 
-                        username: _gitHubOptions.Username, 
-                        ct: stoppingToken);
+                    // var results = await gitHubService.GetUserRepositoriesAsync(
+                    //     token: _gitHubOptions.AuthToken, 
+                    //     username: _gitHubOptions.Username, 
+                    //     ct: stoppingToken);
+                    
+                    // Just a to test the library
+                    var items = await gitHubService
+                        .GetAllUserRepositoriesFromDbAsync("restaurantHoster", "Reservations");
+                    
                     // TODO: persist to database
-                    Console.WriteLine(results);
+                    Console.WriteLine(items);
+                    // Console.WriteLine(results);
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;
