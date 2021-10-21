@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDatabaseAdapter;
 
 namespace GitHubCommunicationService
 {
@@ -37,7 +38,13 @@ namespace GitHubCommunicationService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GitHubCommunicationService", Version = "v1" });
             });
 
+            services.AddMongoDb(options =>
+            {
+                options.AddConnectionString(string.Empty);
+            });
+            
             services.AddLogging();
+            services.AddOptions();
             services.Configure<GitHubOptions>(Configuration.GetSection(nameof(GitHubOptions)));
             services.AddTransient<IRestClient, RestClient>();
             services.AddTransient<IGitHubService, GitHubService>();
