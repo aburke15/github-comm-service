@@ -10,6 +10,7 @@ using GitHubCommunicationService.Responses;
 using GitHubCommunicationService.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
+using MongoDatabaseAdapter.Settings;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -47,15 +48,19 @@ namespace GitHubCommunicationService.Services.Implementations
 
             var response = await _client.ExecuteGetAsync(request, ct);
 
-            if (!response.IsSuccessful)
-                return Enumerable.Empty<GitHubUserRepositoryResponse>();
-
-            return JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content);
+            return !response.IsSuccessful ? Enumerable.Empty<GitHubUserRepositoryResponse>() 
+                : JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content)!;
         }
 
-        public Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string dbName, string collectionName)
+        public Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string databaseName, string collectionName)
         {
-            return _dbRepository.GetAllAsync<Reservation>(dbName, collectionName);
+            var connectionSettings = new MongoDbConnectionSettings()
+            {
+                DatabaseName = databaseName,
+                CollectionName = collectionName
+            };
+            
+            return _dbRepository.GetAllAsync<Reservation>(connectionSettings);
         }
     }
 }
