@@ -10,7 +10,7 @@ namespace GitHubCommunicationService.Services.Interfaces
     {
         Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(string token, string username, CancellationToken ct = default);
 
-        Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string dbName,
+        Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string databaseName,
             string collectionName);
     }
 }
