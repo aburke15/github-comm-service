@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Data.Models;
 using GitHubCommunicationService.Responses;
-using GitHubCommunicationService.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace GitHubCommunicationService.Services.Implementations
+namespace GitHubCommunicationService.Services
 {
     public class GitHubService : IGitHubService
     {
@@ -39,6 +39,7 @@ namespace GitHubCommunicationService.Services.Implementations
             token = Guard.Against.NullOrWhiteSpace(token, nameof(token));
             username = Guard.Against.NullOrWhiteSpace(username, nameof(username));
 
+            // TODO: replace with a class lib that communicates with github
             _client.BaseUrl = new Uri(_gitHubOptions.BaseUri);
             _client.Authenticator = new JwtAuthenticator(token);
 

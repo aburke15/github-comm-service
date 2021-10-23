@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using GitHubCommunicationService.Data.Models;
 using GitHubCommunicationService.Responses;
 
-namespace GitHubCommunicationService.Services.Interfaces
+namespace GitHubCommunicationService.Abstractions
 {
     public interface IGitHubService
     {
