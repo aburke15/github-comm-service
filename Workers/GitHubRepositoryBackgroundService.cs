@@ -1,13 +1,6 @@
-using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace GitHubCommunicationService.Workers
@@ -47,7 +40,7 @@ namespace GitHubCommunicationService.Workers
                     
                     // Just a to test the library
                     var items = await gitHubService
-                        .GetAllUserRepositoriesFromDbAsync("restaurantHoster", "Reservations");
+                        .GetAllUserRepositoriesFromDbAsync("hello", "Reservations");
                     
                     // TODO: persist to database
                     Console.WriteLine(items);
