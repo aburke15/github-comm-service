@@ -11,6 +11,6 @@ namespace GitHubCommunicationService.Abstractions
         Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(string token, string username, CancellationToken ct = default);
 
         Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string databaseName,
-            string collectionName);
+            string collectionName, CancellationToken ct = default);
     }
 }

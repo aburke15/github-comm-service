@@ -1,8 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Workers;
 using RestSharp;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDatabaseAdapter;
 
@@ -28,7 +41,7 @@ namespace GitHubCommunicationService
 
             services.AddMongoDb(options =>
             {
-                options.AddConnectionString("");
+                options.AddConnectionString(GetConnectionStringFromCommandLine());
             });
             
             services.AddLogging();
@@ -59,6 +72,19 @@ namespace GitHubCommunicationService
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static string? GetConnectionStringFromCommandLine()
+        {
+            var commandLineArgs = Program.Args;
+            var connectionString = commandLineArgs?.FirstOrDefault(a => a.Contains("CONNECTION_STRING"));
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+                return null;
+            
+            connectionString = connectionString.Replace("CONNECTION_STRING=", string.Empty);
+
+            return connectionString;
         }
     }
 }

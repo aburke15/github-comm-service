@@ -1,6 +1,13 @@
+using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace GitHubCommunicationService.Workers
@@ -39,11 +46,11 @@ namespace GitHubCommunicationService.Workers
                     //     ct: stoppingToken);
                     
                     // Just a to test the library
-                    var items = await gitHubService
-                        .GetAllUserRepositoriesFromDbAsync("hello", "Reservations");
-                    
-                    // TODO: persist to database
-                    Console.WriteLine(items);
+                    // var items = await gitHubService
+                    //     .GetAllUserRepositoriesFromDbAsync("hello", "Reservations");
+                    //
+                    // // TODO: persist to database
+                    // Console.WriteLine(items);
                     // Console.WriteLine(results);
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");

@@ -53,7 +53,8 @@ namespace GitHubCommunicationService.Services
                 : JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content)!;
         }
 
-        public Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string databaseName, string collectionName)
+        public async Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(
+            string databaseName, string collectionName, CancellationToken ct = default)
         {
             var connectionSettings = new MongoDbConnectionSettings()
             {
@@ -61,7 +62,7 @@ namespace GitHubCommunicationService.Services
                 CollectionName = collectionName
             };
             
-            return _dbRepository.GetAllAsync<Reservation>(connectionSettings);
+            return await _dbRepository.GetAllAsync<Reservation>(connectionSettings, ct);
         }
     }
 }
