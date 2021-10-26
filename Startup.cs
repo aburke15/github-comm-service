@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using GitHubApiClient;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Services;
@@ -41,7 +42,13 @@ namespace GitHubCommunicationService
 
             services.AddMongoDb(options =>
             {
-                options.AddConnectionString(GetConnectionStringFromCommandLine());
+                options.AddConnectionString(GetConnectionStringFromCommandLine()!);
+            });
+
+            services.AddGitHubApiClient(options =>
+            {
+                options.AddToken(string.Empty);
+                options.AddUsername("aburke15");
             });
             
             services.AddLogging();
