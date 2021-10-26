@@ -47,6 +47,7 @@ namespace GitHubCommunicationService
 
             services.AddGitHubApiClient(options =>
             {
+                // TODO: pass these in from the command line
                 options.AddToken(string.Empty);
                 options.AddUsername("aburke15");
             });
