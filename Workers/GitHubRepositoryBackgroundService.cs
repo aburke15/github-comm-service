@@ -25,7 +25,7 @@ namespace GitHubCommunicationService.Workers
         {
             _services = Guard.Against.Null(services, nameof(services));
             _logger = Guard.Against.Null(logger, nameof(logger));
-            _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
+            _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions.Value));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
