@@ -6,6 +6,7 @@ using Ardalis.GuardClauses;
 using GitHubApiClient;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
+using GitHubCommunicationService.Constants;
 using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Workers;
 using RestSharp;
@@ -43,13 +44,14 @@ namespace GitHubCommunicationService
 
             services.AddMongoDb(options =>
             {
-                options.AddConnectionString(GetValueFromCommandLine("CONNECTION_STRING=")!);
+                options.AddConnectionString(GetValueFromCommandLine(
+                    CommandLineArgKeyValues.MongoConnectionString)!);
             });
 
             services.AddGitHubApiClient(options =>
             {
-                options.AddToken(GetValueFromCommandLine("TOKEN")!);
-                options.AddUsername(GetValueFromCommandLine("USERNAME=")!);
+                options.AddToken(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubToken)!);
+                options.AddUsername(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubUsername)!);
             });
             
             services.AddLogging();
@@ -85,11 +87,12 @@ namespace GitHubCommunicationService
         private static string? GetValueFromCommandLine(string key)
         {
             var commandLineArgs = Program.Args;
+            
             var value = commandLineArgs?.FirstOrDefault(s => s.Contains(key));
 
             if (string.IsNullOrWhiteSpace(value))
                 return null;
-
+            
             return value.Replace(key, string.Empty);
         }
     }
