@@ -6,6 +6,7 @@ using Ardalis.GuardClauses;
 using GitHubApiClient;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
+using GitHubCommunicationService.Constants;
 using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Workers;
 using RestSharp;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.VisualBasic;
 using MongoDatabaseAdapter;
 
 namespace GitHubCommunicationService
@@ -42,14 +44,14 @@ namespace GitHubCommunicationService
 
             services.AddMongoDb(options =>
             {
-                options.AddConnectionString(GetConnectionStringFromCommandLine()!);
+                options.AddConnectionString(GetValueFromCommandLine(
+                    CommandLineArgKeyValues.MongoConnectionString)!);
             });
 
             services.AddGitHubApiClient(options =>
             {
-                // TODO: pass these in from the command line
-                options.AddToken(string.Empty);
-                options.AddUsername("aburke15");
+                options.AddToken(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubToken)!);
+                options.AddUsername(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubUsername)!);
             });
             
             services.AddLogging();
@@ -82,17 +84,16 @@ namespace GitHubCommunicationService
             });
         }
 
-        private static string? GetConnectionStringFromCommandLine()
+        private static string? GetValueFromCommandLine(string key)
         {
             var commandLineArgs = Program.Args;
-            var connectionString = commandLineArgs?.FirstOrDefault(a => a.Contains("CONNECTION_STRING"));
+            
+            var value = commandLineArgs?.FirstOrDefault(s => s.Contains(key));
 
-            if (string.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(value))
                 return null;
             
-            connectionString = connectionString.Replace("CONNECTION_STRING=", string.Empty);
-
-            return connectionString;
+            return value.Replace(key, string.Empty);
         }
     }
 }
