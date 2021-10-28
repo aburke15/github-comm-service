@@ -15,4 +15,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENV CONNNECTION_STRING=""
-ENTRYPOINT ["dotnet", "GitHubCommunicationService.dll", "$CONNNECTION_STRING"]
+ENV TOKEN=""
+ENV USERNAME=""
+ENTRYPOINT ["dotnet", "GitHubCommunicationService.dll", "$CONNNECTION_STRING", "$TOKEN", "$USERNAME"]
