@@ -8,7 +8,7 @@ namespace GitHubCommunicationService.Abstractions
 {
     public interface IGitHubService
     {
-        Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(string token, string username, CancellationToken ct = default);
+        Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(CancellationToken ct = default);
 
         Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(string databaseName,
             string collectionName, CancellationToken ct = default);

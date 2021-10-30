@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using GitHubApiClient.Abstractions;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Data.Models;
@@ -20,37 +21,33 @@ namespace GitHubCommunicationService.Services
     public class GitHubService : IGitHubService
     {
         private readonly GitHubOptions _gitHubOptions;
-        private readonly IRestClient _client;
+        private readonly IGitHubApiService _gitHubApiService;
         private readonly IMongoDbRepository _dbRepository;
 
         public GitHubService(
             IOptions<GitHubOptions> gitHubOptions,
-            IRestClient client,
+            IGitHubApiService gitHubApiService,
             IMongoDbRepository dbRepository)
         {
             _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
-            _client = Guard.Against.Null(client, nameof(client));
+            _gitHubApiService = Guard.Against.Null(gitHubApiService, nameof(gitHubApiService));
             _dbRepository = Guard.Against.Null(dbRepository, nameof(dbRepository));
         }
 
-        public async Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(
-            string token, string username, CancellationToken ct = default)
+        public async Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(CancellationToken ct = default)
         {
-            token = Guard.Against.NullOrWhiteSpace(token, nameof(token));
-            username = Guard.Against.NullOrWhiteSpace(username, nameof(username));
+            var result = await _gitHubApiService.GetRepositoriesForUserAsync(ct);
 
-            // TODO: replace with a class lib that communicates with github
-            _client.BaseUrl = new Uri(_gitHubOptions.BaseUri);
-            _client.Authenticator = new JwtAuthenticator(token);
+            if (!result.IsSuccessful)
+                throw new Exception($"An error occured: {result.Message}");
 
-            var request = new RestRequest(
-                $"/users/{username}/repos", Method.GET, DataFormat.Json
-            ) as IRestRequest;
-
-            var response = await _client.ExecuteGetAsync(request, ct);
-
-            return !response.IsSuccessful ? Enumerable.Empty<GitHubUserRepositoryResponse>() 
-                : JsonConvert.DeserializeObject<IEnumerable<GitHubUserRepositoryResponse>>(response.Content)!;
+            Guard.Against.Null(result.Result, nameof(result.Result));
+            var repos = result.Result;
+            // TODO: replace with automapper
+            return repos.Select(x => new GitHubUserRepositoryResponse()
+            {
+                Id = x.Id
+            });
         }
 
         public async Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(
