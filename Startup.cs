@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using AutoMapper;
 using GitHubApiClient;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Constants;
+using GitHubCommunicationService.MappingProfiles;
 using GitHubCommunicationService.Services;
 using GitHubCommunicationService.Workers;
 using RestSharp;
@@ -52,6 +54,11 @@ namespace GitHubCommunicationService
             {
                 options.AddToken(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubToken)!);
                 options.AddUsername(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubUsername)!);
+            });
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddMaps(typeof(GitHubProfile));
             });
             
             services.AddLogging();

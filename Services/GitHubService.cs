@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using AutoMapper;
 using GitHubApiClient.Abstractions;
+using GitHubApiClient.Models;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using GitHubCommunicationService.Data.Models;
@@ -23,15 +25,18 @@ namespace GitHubCommunicationService.Services
         private readonly GitHubOptions _gitHubOptions;
         private readonly IGitHubApiService _gitHubApiService;
         private readonly IMongoDbRepository _dbRepository;
+        private readonly IMapper _mapper;
 
         public GitHubService(
             IOptions<GitHubOptions> gitHubOptions,
             IGitHubApiService gitHubApiService,
-            IMongoDbRepository dbRepository)
+            IMongoDbRepository dbRepository,
+            IMapper mapper)
         {
             _gitHubOptions = Guard.Against.Null(gitHubOptions.Value, nameof(gitHubOptions));
             _gitHubApiService = Guard.Against.Null(gitHubApiService, nameof(gitHubApiService));
             _dbRepository = Guard.Against.Null(dbRepository, nameof(dbRepository));
+            _mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
         public async Task<IEnumerable<GitHubUserRepositoryResponse>> GetUserRepositoriesAsync(CancellationToken ct = default)
@@ -43,11 +48,8 @@ namespace GitHubCommunicationService.Services
 
             Guard.Against.Null(result.Result, nameof(result.Result));
             var repos = result.Result;
-            // TODO: replace with automapper
-            return repos.Select(x => new GitHubUserRepositoryResponse()
-            {
-                Id = x.Id
-            });
+
+            return _mapper.Map<IEnumerable<Repository>, IEnumerable<GitHubUserRepositoryResponse>>(repos);
         }
 
         public async Task<IEnumerable<Reservation>> GetAllUserRepositoriesFromDbAsync(
