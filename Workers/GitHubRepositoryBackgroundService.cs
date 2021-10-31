@@ -30,7 +30,7 @@ namespace GitHubCommunicationService.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            int count = 0;
+            var count = 0;
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
@@ -39,19 +39,6 @@ namespace GitHubCommunicationService.Workers
 
                     var gitHubService = scope.ServiceProvider
                         .GetRequiredService<IGitHubService>();
-
-                    // var results = await gitHubService.GetUserRepositoriesAsync(
-                    //     token: _gitHubOptions.AuthToken, 
-                    //     username: _gitHubOptions.Username, 
-                    //     ct: stoppingToken);
-                    
-                    // Just a to test the library
-                    // var items = await gitHubService
-                    //     .GetAllUserRepositoriesFromDbAsync("hello", "Reservations");
-                    //
-                    // // TODO: persist to database
-                    // Console.WriteLine(items);
-                    // Console.WriteLine(results);
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;

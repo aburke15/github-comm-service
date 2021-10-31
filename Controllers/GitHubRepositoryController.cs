@@ -30,5 +30,11 @@ namespace GitHubCommunicationService.Controllers
             var (databaseName, collectionName) = ("restaurantHoster", "Reservations");
             return Ok(await _gitHubService.GetAllUserRepositoriesFromDbAsync(databaseName, collectionName, ct));
         }
+
+        [HttpGet("repos")]
+        public async Task<IActionResult> GetRepoData(CancellationToken ct)
+        {
+            return Ok(await _gitHubService.GetUserRepositoriesAsync(ct));
+        }
     }
 }
