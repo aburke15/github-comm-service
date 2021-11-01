@@ -65,7 +65,7 @@ namespace GitHubCommunicationService
             services.AddOptions();
             services.Configure<GitHubOptions>(Configuration.GetSection(nameof(GitHubOptions)));
             services.AddTransient<IRestClient, RestClient>();
-            services.AddTransient<IGitHubService, GitHubService>();
+            services.AddTransient<IGitHubApiService, GitHubApiService>();
             services.AddHostedService<GitHubRepositoryBackgroundService>();
         }
 

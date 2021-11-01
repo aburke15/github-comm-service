@@ -8,7 +8,7 @@ namespace GitHubCommunicationService.MappingProfiles
     {
         public GitHubProfile()
         {
-            CreateMap<Repository, GitHubUserRepositoryResponse>();
+            // CreateMap<Repository, GitHubUserRepositoryResponse>();
         }
     }
 }
