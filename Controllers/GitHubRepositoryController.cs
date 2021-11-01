@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using GitHubCommunicationService.Abstractions;
@@ -10,11 +11,11 @@ namespace GitHubCommunicationService.Controllers
     [Route("api/repos")]
     public class GitHubRepositoryController : ControllerBase
     {
-        private readonly IGitHubService _gitHubService;
+        private readonly IGitHubApiService _gitHubApiService;
         
-        public GitHubRepositoryController(IGitHubService gitHubService)
+        public GitHubRepositoryController(IGitHubApiService gitHubApiService)
         {
-            _gitHubService = gitHubService;
+            _gitHubApiService = gitHubApiService;
         }
         
         [HttpGet]
@@ -27,14 +28,14 @@ namespace GitHubCommunicationService.Controllers
         [HttpGet("tests")]
         public async Task<IActionResult> GetTestData(CancellationToken ct)
         {
-            var (databaseName, collectionName) = ("restaurantHoster", "Reservations");
-            return Ok(await _gitHubService.GetAllUserRepositoriesFromDbAsync(databaseName, collectionName, ct));
+            await Task.Delay(1000, ct);
+            throw new NotImplementedException();
         }
 
         [HttpGet("repos")]
         public async Task<IActionResult> GetRepoData(CancellationToken ct)
         {
-            return Ok(await _gitHubService.GetUserRepositoriesAsync(ct));
+            return Ok(await _gitHubApiService.GetUserRepositoriesFromApiAsync(ct));
         }
     }
 }
