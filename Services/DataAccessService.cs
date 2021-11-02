@@ -27,6 +27,7 @@ namespace GitHubCommunicationService.Services
                 CollectionName = collectionName
             };
 
+            // TODO: set the correct document type
             await _dbRepository.InsertManyAsync<object>(settings, documents as IEnumerable<object>, ct);
         }
     }
