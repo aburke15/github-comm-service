@@ -37,7 +37,7 @@ namespace GitHubCommunicationService.Workers
                 {
                     using var scope = _services.CreateScope();
 
-                    var gitHubService = scope.ServiceProvider
+                    var gitHubApiService = scope.ServiceProvider
                         .GetRequiredService<IGitHubApiService>();
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
