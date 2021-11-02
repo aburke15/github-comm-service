@@ -44,7 +44,7 @@ namespace GitHubCommunicationService.Workers
 
                     var repositories = await gitHubApiService
                         .GetUserRepositoriesFromApiAsync(stoppingToken);
-
+                    // Persist above type after the model type is created
                     var dbRepository = scope.ServiceProvider
                         .GetRequiredService<IMongoDbRepository>();
 
