@@ -3,12 +3,14 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using GitHubApiClient.Abstractions;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using MongoDatabaseAdapter.Abstractions;
 
 namespace GitHubCommunicationService.Workers
 {
@@ -39,6 +41,12 @@ namespace GitHubCommunicationService.Workers
 
                     var gitHubApiService = scope.ServiceProvider
                         .GetRequiredService<IGitHubApiService>();
+
+                    var repositories = await gitHubApiService
+                        .GetUserRepositoriesFromApiAsync(stoppingToken);
+
+                    var dbRepository = scope.ServiceProvider
+                        .GetRequiredService<IMongoDbRepository>();
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;
