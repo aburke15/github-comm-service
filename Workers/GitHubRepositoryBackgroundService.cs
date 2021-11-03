@@ -6,11 +6,13 @@ using Ardalis.GuardClauses;
 using GitHubApiClient.Abstractions;
 using GitHubCommunicationService.Abstractions;
 using GitHubCommunicationService.Config;
+using GitHubCommunicationService.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
+using MongoDatabaseAdapter.Settings;
 
 namespace GitHubCommunicationService.Workers
 {
@@ -41,12 +43,23 @@ namespace GitHubCommunicationService.Workers
 
                     var gitHubApiService = scope.ServiceProvider
                         .GetRequiredService<IGitHubApiService>();
+                    var dbRepository = scope.ServiceProvider
+                        .GetRequiredService<IMongoDbRepository>();
+
+                    var repos = await dbRepository
+                        .GetAllAsync<Repository>(new MongoDbConnectionSettings()
+                        {
+                            DatabaseName = "github",
+                            CollectionName = "repositories"
+                        }, stoppingToken);
 
                     var repositories = await gitHubApiService
                         .GetUserRepositoriesFromApiAsync(stoppingToken);
-                    // Persist above type after the model type is created
-                    var dbRepository = scope.ServiceProvider
-                        .GetRequiredService<IMongoDbRepository>();
+                    // TODO: Persist above type after the model type is created
+                    
+                    
+                    foreach (var repo in repositories)
+                        Console.WriteLine(repo.ToString());
 
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;
@@ -59,7 +72,7 @@ namespace GitHubCommunicationService.Workers
                 }
 
                 // TODO: change to TimeSpan.From(time in options file) 
-                await Task.Delay(5000, stoppingToken);
+                await Task.Delay(10000, stoppingToken);
             }
 
             _logger.LogInformation(
