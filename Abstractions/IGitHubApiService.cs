@@ -8,6 +8,6 @@ namespace GitHubCommunicationService.Abstractions
 {
     public interface IGitHubApiService
     {
-        Task<IEnumerable<Repository>> GetUserRepositoriesFromApiAsync(CancellationToken ct = default);
+        Task<IReadOnlyList<Repository>> GetUserRepositoriesFromApiAsync(CancellationToken ct = default);
     }
 }
