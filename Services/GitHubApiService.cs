@@ -34,7 +34,7 @@ namespace GitHubCommunicationService.Services
             _mapper = Guard.Against.Null(mapper, nameof(mapper));
         }
 
-        public async Task<IEnumerable<Repository>> GetUserRepositoriesFromApiAsync(CancellationToken ct = default)
+        public async Task<IReadOnlyList<Repository>> GetUserRepositoriesFromApiAsync(CancellationToken ct = default)
         {
             var result = await _gitHubApiClient.GetRepositoriesForUserAsync(ct);
             
@@ -45,9 +45,9 @@ namespace GitHubCommunicationService.Services
             var json = result.Json;
 
             if (string.IsNullOrWhiteSpace(json))
-                return Enumerable.Empty<Repository>();
+                return new List<Repository>();
             
-            return JsonConvert.DeserializeObject<IEnumerable<Repository>>(json)!;
+            return JsonConvert.DeserializeObject<IReadOnlyList<Repository>>(json)!;
         }
     }
 }

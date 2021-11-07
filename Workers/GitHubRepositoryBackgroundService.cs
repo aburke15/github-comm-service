@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -39,28 +42,52 @@ namespace GitHubCommunicationService.Workers
             {
                 try
                 {
+                    // TODO: refactor this 
                     using var scope = _services.CreateScope();
+                    var newRepos = new List<Repository>() as IList<Repository>;
 
                     var gitHubApiService = scope.ServiceProvider
                         .GetRequiredService<IGitHubApiService>();
                     var dbRepository = scope.ServiceProvider
                         .GetRequiredService<IMongoDbRepository>();
 
-                    var repos = await dbRepository
-                        .GetAllAsync<Repository>(new MongoDbConnectionSettings()
-                        {
-                            DatabaseName = "github",
-                            CollectionName = "repositories"
-                        }, stoppingToken);
-
-                    var repositories = await gitHubApiService
+                    var githubRepos = await gitHubApiService
                         .GetUserRepositoriesFromApiAsync(stoppingToken);
-                    // TODO: Persist above type after the model type is created
-                    
-                    
-                    foreach (var repo in repositories)
-                        Console.WriteLine(repo.ToString());
 
+                    var settings = new MongoDbConnectionSettings
+                    {
+                        DatabaseName = "github",
+                        CollectionName = "repositories"
+                    };
+
+                    var dbRepos = await dbRepository
+                        .GetAllAsync<Repository>(settings, stoppingToken);
+
+                    if (dbRepos.Count == 0)
+                    {
+                        Console.WriteLine("Inserting github repos into db.");
+                        await dbRepository.InsertManyAsync(settings, githubRepos, stoppingToken);
+                        Console.WriteLine($"Inserted {githubRepos.Count} repos into db.");
+                        continue;
+                    }
+
+                    if (dbRepos.Count > 0)
+                    {
+                        var repoIds = dbRepos.Select(x => x.Id).ToList();
+                        foreach (var repo in githubRepos)
+                        {
+                            if (!repoIds.Contains(repo.Id))
+                                newRepos.Add(repo);
+                        }
+
+                        if (newRepos.Count > 0)
+                        {
+                            Console.WriteLine($"Inserting new repos into db.");
+                            await dbRepository.InsertManyAsync(settings, newRepos, stoppingToken);
+                            Console.WriteLine($"Inserted {newRepos.Count} repos into db.");
+                        }
+                    }
+                    
                     Console.WriteLine($"Doing work: {count} at - [{DateTime.Now}]");
                     count++;
                 }
