@@ -1,9 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper.Configuration.Conventions;
 using GitHubCommunicationService.Abstractions;
+using GitHubCommunicationService.Data.Models;
 using GitHubCommunicationService.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDatabaseAdapter.Abstractions;
+using MongoDatabaseAdapter.Settings;
 
 namespace GitHubCommunicationService.Controllers
 {
@@ -12,17 +16,14 @@ namespace GitHubCommunicationService.Controllers
     public class GitHubRepositoryController : ControllerBase
     {
         private readonly IGitHubApiService _gitHubApiService;
+        private readonly IMongoDbRepository _dbRepository;
         
-        public GitHubRepositoryController(IGitHubApiService gitHubApiService)
+        public GitHubRepositoryController(
+            IGitHubApiService gitHubApiService,
+            IMongoDbRepository dbRepository)
         {
             _gitHubApiService = gitHubApiService;
-        }
-        
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            await Task.Delay(5000);
-            return Ok();
+            _dbRepository = dbRepository;
         }
 
         [HttpGet("tests")]
@@ -32,10 +33,23 @@ namespace GitHubCommunicationService.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("repos")]
-        public async Task<IActionResult> GetRepoData(CancellationToken ct)
+        [HttpGet]
+        public async Task<IActionResult> GetReposFromApi(CancellationToken ct)
         {
             return Ok(await _gitHubApiService.GetUserRepositoriesFromApiAsync(ct));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRepoFromDbById(string id, CancellationToken ct)
+        {
+            Console.WriteLine($"objectId: {id}");
+            var settings = new MongoDbConnectionSettings
+            {
+                DatabaseName = "github",
+                CollectionName = "repositories"
+            };
+
+            return Ok(await _dbRepository.GetByIdAsync<Repository>(settings, id, ct));
         }
     }
 }
