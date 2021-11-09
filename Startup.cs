@@ -44,16 +44,40 @@ namespace GitHubCommunicationService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GitHubCommunicationService", Version = "v1" });
             });
 
+            // TODO: refactor into something more elegant
+            var isDev = false;
+            if (bool.TryParse(Configuration["Development"], out var val))
+                isDev = val;
+            
+            var mongoUri = Configuration["MongoUri"];
+            var token = Configuration["AuthToken"];
+            var username = Configuration["Username"];
+            
             services.AddMongoDb(options =>
             {
-                options.AddConnectionString(GetValueFromCommandLine(
-                    CommandLineArgKeyValues.MongoConnectionString)!);
+                if (isDev)
+                {
+                    options.AddConnectionString(mongoUri);
+                }
+                else
+                {
+                    options.AddConnectionString(GetValueFromCommandLine(
+                        CommandLineArgKeyValues.MongoConnectionString)!);
+                }
             });
 
             services.AddGitHubApiClient(options =>
             {
-                options.AddToken(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubToken)!);
-                options.AddUsername(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubUsername)!);
+                if (isDev)
+                {
+                    options.AddToken(token);
+                    options.AddUsername(username);
+                }
+                else
+                {
+                    options.AddToken(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubToken)!);
+                    options.AddUsername(GetValueFromCommandLine(CommandLineArgKeyValues.GitHubUsername)!);
+                }
             });
 
             services.AddAutoMapper(cfg =>
