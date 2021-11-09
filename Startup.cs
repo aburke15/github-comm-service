@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -125,6 +126,11 @@ namespace GitHubCommunicationService
                 return null;
             
             return value.Replace(key, string.Empty);
+        }
+
+        private string? GetOptionStringValue()
+        {
+            throw new NotImplementedException();
         }
     }
 }
