@@ -42,14 +42,25 @@ namespace GitHubCommunicationService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRepoFromDbById(string id, CancellationToken ct)
         {
-            Console.WriteLine($"objectId: {id}");
-            var settings = new MongoDbConnectionSettings
+            try
             {
-                DatabaseName = "github",
-                CollectionName = "repositories"
-            };
+                Console.WriteLine($"objectId: {id}");
+                var settings = new MongoDbConnectionSettings
+                {
+                    DatabaseName = "github",
+                    CollectionName = "repositories"
+                };
 
-            return Ok(await _dbRepository.GetByIdAsync<Repository>(settings, id, ct));
+                var result = await _dbRepository
+                    .GetByIdAsync<Repository>(settings, id, ct);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e);
+            }
         }
     }
 }
