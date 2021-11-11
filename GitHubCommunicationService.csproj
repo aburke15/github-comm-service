@@ -4,13 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <!--<ImplicitUsings>enable</ImplicitUsings>-->
+    <ImplicitUsings>enable</ImplicitUsings>
     
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ABU.Adapters.MongoDbAdapter" Version="1.1.8" />
-    <PackageReference Include="ABU.Clients.GitHubApiClient" Version="0.0.8" />
+    <PackageReference Include="ABU.Adapters.MongoDbAdapter" Version="1.2.0" />
+    <PackageReference Include="ABU.Clients.GitHubApiClient" Version="1.0.0" />
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
