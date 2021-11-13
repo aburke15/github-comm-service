@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper.Configuration.Conventions;
@@ -8,6 +9,7 @@ using GitHubCommunicationService.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
+using MongoDB.Driver;
 
 namespace GitHubCommunicationService.Controllers;
 
@@ -18,12 +20,19 @@ public class GitHubRepositoryController : ControllerBase
     private readonly IGitHubApiService _gitHubApiService;
     private readonly IMongoDbRepository _dbRepository;
 
+    private readonly MongoDbConnectionSettings _settings;
+
     public GitHubRepositoryController(
         IGitHubApiService gitHubApiService,
         IMongoDbRepository dbRepository)
     {
         _gitHubApiService = gitHubApiService;
         _dbRepository = dbRepository;
+        _settings = new MongoDbConnectionSettings()
+        {
+            DatabaseName = "github",
+            CollectionName = "repositories"
+        };
     }
 
     [HttpGet("tests")]
@@ -45,14 +54,27 @@ public class GitHubRepositoryController : ControllerBase
         try
         {
             Console.WriteLine($"objectId: {id}");
-            var settings = new MongoDbConnectionSettings
-            {
-                DatabaseName = "github",
-                CollectionName = "repositories"
-            };
 
             var result = await _dbRepository
-                .GetByIdAsync<Repository>(settings, id, ct);
+                .GetByIdAsync<Repository>(_settings, id, ct);
+
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e);
+        }
+    }
+
+    [HttpGet("find/{id}")]
+    public async Task<IActionResult> FindFromRepoAsync(string id, CancellationToken ct)
+    {
+        try
+        {
+            Console.WriteLine($"Executing method: {nameof(FindFromRepoAsync)} at: {DateTime.Now}");
+
+            var result = await _dbRepository.FindOneAsync(_settings, Builders<Repository>.Filter.Eq("Name", "blog-api"), ct);
 
             return Ok(result);
         }
