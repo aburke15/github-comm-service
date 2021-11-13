@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ABU.Adapters.MongoDbAdapter" Version="1.2.0" />
+    <PackageReference Include="ABU.Adapters.MongoDbAdapter" Version="1.2.2" />
     <PackageReference Include="ABU.Clients.GitHubApiClient" Version="1.0.0" />
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
