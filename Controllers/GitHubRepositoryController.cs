@@ -74,9 +74,31 @@ public class GitHubRepositoryController : ControllerBase
         {
             Console.WriteLine($"Executing method: {nameof(FindFromRepoAsync)} at: {DateTime.Now}");
 
-            var result = await _dbRepository.FindOneAsync(_settings, Builders<Repository>.Filter.Eq("Name", "blog-api"), ct);
+            var filter = Builders<Repository>.Filter.Eq(fp => fp.Name, "blog-api");
+
+            var result = await _dbRepository.FindOneAsync(_settings, filter, ct);
 
             return Ok(result);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e);
+        }
+    }
+
+    [HttpGet("find-all")]
+    public async Task<IActionResult> FindAllFromRepoAsync(CancellationToken ct)
+    {
+        try
+        {
+            Console.WriteLine($"Executing method: {nameof(FindAllFromRepoAsync)} at: {DateTime.Now}");
+
+            var filter = Builders<Repository>.Filter.Lt(fp => fp.Size, 100);
+
+            var results = await _dbRepository.FindManyAsync(_settings, filter, ct);
+
+            return Ok(results);
         }
         catch (Exception e)
         {
