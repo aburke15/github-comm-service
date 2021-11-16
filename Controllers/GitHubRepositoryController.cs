@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
 using MongoDB.Driver;
+using System.Reflection;
 
 namespace GitHubCommunicationService.Controllers;
 
@@ -65,7 +66,7 @@ public class GitHubRepositoryController : ControllerBase
     {
         try
         {
-            Console.WriteLine($"Executing method: {nameof(FindFromRepoAsync)} at: {DateTime.Now}");
+            Console.WriteLine($"Executing method: {MethodBase.GetCurrentMethod()?.Name} at: {DateTime.Now}");
 
             var filter = Builders<Repository>.Filter.Eq(fp => fp.Name, "blog-api");
 
@@ -85,7 +86,7 @@ public class GitHubRepositoryController : ControllerBase
     {
         try
         {
-            Console.WriteLine($"Executing method: {nameof(FindAllFromRepoAsync)} at: {DateTime.Now}");
+            Console.WriteLine($"Executing method: {MethodBase.GetCurrentMethod()?.Name} at: {DateTime.Now}");
 
             var filter = Builders<Repository>.Filter.Lt(fp => fp.Size, 100);
 
@@ -100,12 +101,22 @@ public class GitHubRepositoryController : ControllerBase
         }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetFromTwoDbsAsync()
+    [HttpGet("get-two")]
+    public async Task<IActionResult> GetFromTwoDbsAsync(CancellationToken ct)
     {
         try
         {
-            return Ok();
+            Console.WriteLine($"Executing method: {MethodBase.GetCurrentMethod()?.Name} at: {DateTime.Now}");
+
+            var filter = Builders<Repository>.Filter.Lt(fp => fp.Size, 100);
+
+            var results1 = await _dbRepository.FindManyAsync(_settings, filter, ct);
+            var results2 = await _dbRepository.GetAllAsync<Test>(new MongoDbConnectionSettings { DatabaseName = "test", CollectionName = "tests"}, ct);
+            
+            foreach (var res in results2)
+                Console.WriteLine(res.ToString());
+
+            return Ok(results1);
         }
         catch (Exception e)
         {
