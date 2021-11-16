@@ -101,19 +101,22 @@ public class GitHubRepositoryController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("get-two")]
     public async Task<IActionResult> GetFromTwoDbsAsync(CancellationToken ct)
     {
         try
         {
-            // TODO: make two calls to mongo atlas, pull data from two different dbs
             Console.WriteLine($"Executing method: {MethodBase.GetCurrentMethod()?.Name} at: {DateTime.Now}");
 
             var filter = Builders<Repository>.Filter.Lt(fp => fp.Size, 100);
 
             var results1 = await _dbRepository.FindManyAsync(_settings, filter, ct);
+            var results2 = await _dbRepository.GetAllAsync<Test>(new MongoDbConnectionSettings { DatabaseName = "test", CollectionName = "tests"}, ct);
+            
+            foreach (var res in results2)
+                Console.WriteLine(res.ToString());
 
-            return Ok();
+            return Ok(results1);
         }
         catch (Exception e)
         {
