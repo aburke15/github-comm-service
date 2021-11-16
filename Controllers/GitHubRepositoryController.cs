@@ -35,13 +35,6 @@ public class GitHubRepositoryController : ControllerBase
         };
     }
 
-    [HttpGet("tests")]
-    public async Task<IActionResult> GetTestData(CancellationToken ct)
-    {
-        await Task.Delay(1000, ct);
-        throw new NotImplementedException();
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetReposFromApi(CancellationToken ct)
     {
@@ -99,6 +92,20 @@ public class GitHubRepositoryController : ControllerBase
             var results = await _dbRepository.FindManyAsync(_settings, filter, ct);
 
             return Ok(results);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetFromTwoDbsAsync()
+    {
+        try
+        {
+            return Ok();
         }
         catch (Exception e)
         {
