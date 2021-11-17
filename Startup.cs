@@ -47,7 +47,7 @@ namespace GitHubCommunicationService
 
             // TODO: refactor into something more elegant
             var isDev = false;
-            if (bool.TryParse(Configuration["Development"], out var val))
+            if (bool.TryParse(Configuration["DevEnv"], out var val))
                 isDev = val;
             
             var mongoUri = Configuration["MongoUri"];
@@ -57,14 +57,10 @@ namespace GitHubCommunicationService
             services.AddMongoDb(options =>
             {
                 if (isDev)
-                {
                     options.AddConnectionString(mongoUri);
-                }
                 else
-                {
                     options.AddConnectionString(GetValueFromCommandLine(
                         CommandLineArgKeyValues.MongoConnectionString)!);
-                }
             });
 
             services.AddGitHubApiClient(options =>
