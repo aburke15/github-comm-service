@@ -3,16 +3,16 @@ using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper.Configuration.Conventions;
-using GitHubCommunicationService.Abstractions;
-using GitHubCommunicationService.Data.Models;
-using GitHubCommunicationService.Services;
+using ABU.GitHubCommunicationService.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
 using MongoDB.Driver;
 using System.Reflection;
+using ABU.GitHubCommunicationService.Abstractions;
+using ABU.GitHubCommunicationService.Data.Models;
 
-namespace GitHubCommunicationService.Controllers;
+namespace ABU.GitHubCommunicationService.Controllers;
 
 [ApiController]
 [Route("api/repos")]

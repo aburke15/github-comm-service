@@ -17,4 +17,4 @@ COPY --from=build-env /app/out .
 ENV CONNNECTION_STRING=""
 ENV TOKEN=""
 ENV USERNAME=""
-ENTRYPOINT ["dotnet", "GitHubCommunicationService.dll", "$CONNNECTION_STRING", "$TOKEN", "$USERNAME"]
+ENTRYPOINT ["dotnet", "ABU.GitHubCommunicationService.dll", "$CONNNECTION_STRING", "$TOKEN", "$USERNAME"]
