@@ -4,14 +4,14 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
+using ABU.GitHubCommunicationService.Abstractions;
+using ABU.GitHubCommunicationService.Data.Models;
 using Ardalis.GuardClauses;
 using AutoMapper;
 using GitHubApiClient.Abstractions;
 using GitHubApiClient.Models;
-using GitHubCommunicationService.Abstractions;
-using GitHubCommunicationService.Config;
-using GitHubCommunicationService.Data.Models;
-using GitHubCommunicationService.Responses;
+using ABU.GitHubCommunicationService.Config;
+using ABU.GitHubCommunicationService.Responses;
 using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace GitHubCommunicationService.Services;
+namespace ABU.GitHubCommunicationService.Services;
 
 public class GitHubApiService : IGitHubApiService
 {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GitHubCommunicationService.Data.Models;
-using GitHubCommunicationService.Responses;
+using ABU.GitHubCommunicationService.Data.Models;
+using ABU.GitHubCommunicationService.Responses;
 
-namespace GitHubCommunicationService.Abstractions
+namespace ABU.GitHubCommunicationService.Abstractions
 {
     public interface IGitHubApiService
     {

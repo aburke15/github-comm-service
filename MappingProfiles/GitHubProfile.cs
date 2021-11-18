@@ -1,8 +1,8 @@
 using AutoMapper;
 using GitHubApiClient.Models;
-using GitHubCommunicationService.Responses;
+using ABU.GitHubCommunicationService.Responses;
 
-namespace GitHubCommunicationService.MappingProfiles
+namespace ABU.GitHubCommunicationService.MappingProfiles
 {
     public class GitHubProfile : Profile
     {

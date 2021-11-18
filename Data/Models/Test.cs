@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 
-namespace GitHubCommunicationService.Data.Models;
+namespace ABU.GitHubCommunicationService.Data.Models;
 
 public record Test
 {

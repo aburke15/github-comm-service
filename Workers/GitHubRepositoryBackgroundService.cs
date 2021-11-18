@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ABU.GitHubCommunicationService.Abstractions;
+using ABU.GitHubCommunicationService.Config;
+using ABU.GitHubCommunicationService.Data.Models;
 using Ardalis.GuardClauses;
 using GitHubApiClient.Abstractions;
-using GitHubCommunicationService.Abstractions;
-using GitHubCommunicationService.Config;
-using GitHubCommunicationService.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +17,7 @@ using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
 
-namespace GitHubCommunicationService.Workers;
+namespace ABU.GitHubCommunicationService.Workers;
 
 public class GitHubRepositoryBackgroundService : BackgroundService
 {

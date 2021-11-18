@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace GitHubCommunicationService.Data.Models
+namespace ABU.GitHubCommunicationService.Data.Models
 {
     public record RepositoryPermissions
     {

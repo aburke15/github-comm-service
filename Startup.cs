@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ABU.GitHubCommunicationService.Abstractions;
+using ABU.GitHubCommunicationService.Config;
+using ABU.GitHubCommunicationService.Constants;
+using ABU.GitHubCommunicationService.MappingProfiles;
+using ABU.GitHubCommunicationService.Services;
+using ABU.GitHubCommunicationService.Workers;
 using Ardalis.GuardClauses;
 using AutoMapper;
 using GitHubApiClient;
-using GitHubCommunicationService.Abstractions;
-using GitHubCommunicationService.Config;
-using GitHubCommunicationService.Constants;
-using GitHubCommunicationService.MappingProfiles;
-using GitHubCommunicationService.Services;
-using GitHubCommunicationService.Workers;
 using RestSharp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +25,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
 using MongoDatabaseAdapter;
 
-namespace GitHubCommunicationService
+namespace ABU.GitHubCommunicationService
 {
     public class Startup
     {
@@ -42,7 +42,7 @@ namespace GitHubCommunicationService
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GitHubCommunicationService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ABU.GitHubCommunicationService", Version = "v1" });
             });
 
             // TODO: refactor into something more elegant
@@ -97,7 +97,7 @@ namespace GitHubCommunicationService
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GitHubCommunicationService v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ABU.GitHubCommunicationService v1"));
             }
 
             app.UseHttpsRedirection();
