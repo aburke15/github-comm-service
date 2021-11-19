@@ -1,8 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
 
-namespace ABU.GitHubCommunicationService.Data.Models;
+namespace ABU.GitHubCommunicationService.Core.Data.Models;
 
 public record Test
 {

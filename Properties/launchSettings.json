@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GitHubCommunicationService": {
+    "ABU.GitHubCommunicationService": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

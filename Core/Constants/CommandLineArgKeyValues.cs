@@ -1,4 +1,4 @@
-namespace ABU.GitHubCommunicationService.Constants
+namespace ABU.GitHubCommunicationService.Core.Constants
 {
     public static class CommandLineArgKeyValues
     {

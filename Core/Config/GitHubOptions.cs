@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace ABU.GitHubCommunicationService.Config
+namespace ABU.GitHubCommunicationService.Core.Config
 {
     [UsedImplicitly]
     public record GitHubOptions

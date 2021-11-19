@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ABU.GitHubCommunicationService.Abstractions;
-using ABU.GitHubCommunicationService.Config;
-using ABU.GitHubCommunicationService.Constants;
-using ABU.GitHubCommunicationService.MappingProfiles;
-using ABU.GitHubCommunicationService.Services;
-using ABU.GitHubCommunicationService.Workers;
+using ABU.GitHubCommunicationService.ApplicationCore.MappingProfiles;
+using ABU.GitHubCommunicationService.Core.Config;
+using ABU.GitHubCommunicationService.Core.Constants;
+using ABU.GitHubCommunicationService.Infrastructure.Abstractions;
+using ABU.GitHubCommunicationService.Infrastructure.Services;
+using ABU.GitHubCommunicationService.Infrastructure.Workers;
 using GitHubApiClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -34,7 +34,6 @@ services.AddSwaggerGen(c =>
 });
 
 // TODO: refactor into something more elegant
-// TODO: re-add the appsettings.Dev.json
 var isDev = false;
 if (bool.TryParse(builder.Configuration["DevEnv"], out var val))
     isDev = val;

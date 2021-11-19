@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper.Configuration.Conventions;
-using ABU.GitHubCommunicationService.Services;
+using System.Reflection;
+using ABU.GitHubCommunicationService.Core.Data.Models;
+using ABU.GitHubCommunicationService.Infrastructure.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
 using MongoDB.Driver;
-using System.Reflection;
-using ABU.GitHubCommunicationService.Abstractions;
-using ABU.GitHubCommunicationService.Data.Models;
 
-namespace ABU.GitHubCommunicationService.Controllers;
+namespace ABU.GitHubCommunicationService.Web.Controllers;
 
 [ApiController]
 [Route("api/repos")]
