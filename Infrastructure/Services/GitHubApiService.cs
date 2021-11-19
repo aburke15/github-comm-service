@@ -1,25 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Threading.Tasks;
-using ABU.GitHubCommunicationService.Abstractions;
-using ABU.GitHubCommunicationService.Data.Models;
+using ABU.GitHubCommunicationService.Core.Data.Models;
+using ABU.GitHubCommunicationService.Infrastructure.Abstractions;
 using Ardalis.GuardClauses;
 using AutoMapper;
 using GitHubApiClient.Abstractions;
-using GitHubApiClient.Models;
-using ABU.GitHubCommunicationService.Config;
-using ABU.GitHubCommunicationService.Responses;
-using Microsoft.Extensions.Options;
-using MongoDatabaseAdapter.Abstractions;
-using MongoDatabaseAdapter.Settings;
 using Newtonsoft.Json;
-using RestSharp;
-using RestSharp.Authenticators;
 
-namespace ABU.GitHubCommunicationService.Services;
+namespace ABU.GitHubCommunicationService.Infrastructure.Services;
 
 public class GitHubApiService : IGitHubApiService
 {

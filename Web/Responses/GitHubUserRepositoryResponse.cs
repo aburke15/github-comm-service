@@ -1,7 +1,6 @@
-using System;
 using Newtonsoft.Json;
 
-namespace ABU.GitHubCommunicationService.Responses
+namespace ABU.GitHubCommunicationService.Web.Responses
 {
     public record GitHubUserRepositoryResponse
     {

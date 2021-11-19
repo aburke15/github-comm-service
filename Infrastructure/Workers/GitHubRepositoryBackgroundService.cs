@@ -1,23 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ABU.GitHubCommunicationService.Abstractions;
-using ABU.GitHubCommunicationService.Config;
-using ABU.GitHubCommunicationService.Data.Models;
+using ABU.GitHubCommunicationService.Core.Config;
+using ABU.GitHubCommunicationService.Core.Data.Models;
+using ABU.GitHubCommunicationService.Infrastructure.Abstractions;
 using Ardalis.GuardClauses;
-using GitHubApiClient.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoDatabaseAdapter.Abstractions;
 using MongoDatabaseAdapter.Settings;
 
-namespace ABU.GitHubCommunicationService.Workers;
+namespace ABU.GitHubCommunicationService.Infrastructure.Workers;
 
 public class GitHubRepositoryBackgroundService : BackgroundService
 {
