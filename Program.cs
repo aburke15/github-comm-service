@@ -93,8 +93,8 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 string? GetValueFromCommandLine(string key)
 {
-    var value = args?.FirstOrDefault(s => s.Contains(key));
-
+    var value = args.FirstOrDefault(s => s.Contains(key));
+    
     if (string.IsNullOrWhiteSpace(value))
         return null;
 
